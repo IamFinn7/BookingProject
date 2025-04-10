@@ -15,11 +15,13 @@ namespace Application.Hotels.Queries
 
     public class GetHotelsHandler : IQueryHandler<GetHotels, List<GetHotelsResponse>>
     {
-        private readonly IHotelRepository _rep;
+        private readonly IHotelRepository _hotelRep;
+        private readonly IUserRepository _userRep;
 
-        public GetHotelsHandler(IHotelRepository rep)
+        public GetHotelsHandler(IHotelRepository hotelRep, IUserRepository userRep)
         {
-            _rep = rep;
+            _hotelRep = hotelRep;
+            _userRep = userRep;
         }
 
         public async Task<List<GetHotelsResponse>> Handle(
@@ -38,9 +40,21 @@ namespace Application.Hotels.Queries
 
             var sortBy = ApplicationHelper.ParseSortCriteria(request.SortBy);
 
-            var result = await _rep.GetAllAsync(findCreterias, sortBy);
+            var hotels = await _hotelRep.GetAllAsync(findCreterias, sortBy);
 
-            return result.Select(x => x.ToGetHotelsResponse()).ToList();
+            var results = new List<GetHotelsResponse>();
+
+            foreach (var hotel in hotels)
+            {
+                var response = hotel.ToGetHotelsResponse();
+
+                var ownerName = await _userRep.GetUserNameByIdAsync(hotel.owner_id);
+                response.OwnerName = ownerName ?? "Unknown";
+
+                results.Add(response);
+            }
+
+            return results;
         }
     }
 }

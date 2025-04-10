@@ -26,7 +26,10 @@ namespace Infrastructure.Repository
 
                 var result = await _collection.Find(filter).FirstOrDefaultAsync();
 
-                return result.full_name;
+				if (result == null)
+					return "unknown";
+
+				return result.full_name;
             }
             catch
             {
