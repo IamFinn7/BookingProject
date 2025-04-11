@@ -7,7 +7,7 @@ namespace Infrastructure.Repository
 {
     public class UserRepository : IUserRepository
     {
-        private readonly IMongoCollection<User> _collection;
+        private readonly IMongoCollection<UserEntity> _collection;
 
         public UserRepository(MongoDBHelper mongoDBHelper)
         {
@@ -15,14 +15,14 @@ namespace Infrastructure.Repository
             mongoDBHelper.CreateCollectionIfNotExistsAsync("users").Wait();
 
             // Gán collection
-            _collection = mongoDBHelper.GetCollection<User>("users");
+            _collection = mongoDBHelper.GetCollection<UserEntity>("users");
         }
 
         public async Task<string> GetUserNameByIdAsync(string id)
         {
             try
             {
-                var filter = Builders<User>.Filter.Eq(x => x.id, id);
+                var filter = Builders<UserEntity>.Filter.Eq(x => x.id, id);
 
                 var result = await _collection.Find(filter).FirstOrDefaultAsync();
 

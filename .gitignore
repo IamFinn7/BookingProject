@@ -1,0 +1,20 @@
+# Ignore build output
+bin/
+obj/
+
+# Ignore Visual Studio folders
+.vs/
+
+# Ignore user-specific files
+*.user
+*.suo
+
+# Ignore temp/logs/env
+*.log
+*.tmp
+*.db
+*.env
+
+# Optional: ignore secrets or local config
+appsettings.Local.json
+secrets.json

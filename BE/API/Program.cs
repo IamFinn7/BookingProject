@@ -1,4 +1,4 @@
-using Application.Hotels.Queries;
+using Application;
 using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +13,7 @@ builder.Services.AddMediatR(config =>
 });
 
 builder.Services.AddInfrastructure();
+builder.Services.AddApplication();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 

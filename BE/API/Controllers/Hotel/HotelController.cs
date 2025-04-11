@@ -1,5 +1,6 @@
-using Application.Hotels.Commands;
-using Application.Hotels.Queries;
+using API.DTOs.Hotel;
+using Application.Hotel.Commands;
+using Application.Hotel.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Constants;
@@ -39,6 +40,27 @@ namespace API.Controllers.Hotel
                 ResponseCode.CREATED_SUCCESS.GetMessage(),
                 ResponseCode.CREATED_SUCCESS.GetCode()
             );
+        }
+
+        [HttpPut("{id}")]
+        // [Authorize]
+        public async Task<IActionResult> UpdateHotel(
+            string id,
+            [FromBody] UpdateHotelRequest request
+        )
+        {
+            await _mediator.Send(
+                new UpdateHotelCommand(
+                    id,
+                    request.Name,
+                    request.Address,
+                    request.City,
+                    request.Country,
+                    request.Amenities,
+                    request.Images
+                )
+            );
+            return Success(ResponseCode.UPDATED_SUCCESS.GetMessage());
         }
     }
 }
