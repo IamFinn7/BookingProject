@@ -62,5 +62,13 @@ namespace API.Controllers.Hotel
             );
             return Success(ResponseCode.UPDATED_SUCCESS.GetMessage());
         }
+
+        [HttpDelete("{id}")]
+        // [Authorize]
+        public async Task<IActionResult> DeleteHotel(string id)
+        {
+            await _mediator.Send(new DeleteHotelCommand(id));
+            return Success(ResponseCode.DELETE_SUCCESS.GetMessage());
+        }
     }
 }
