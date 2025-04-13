@@ -1,12 +1,12 @@
+using System.Helpers;
+using Application.Interfaces.Repositories.Hotel;
 using Domain.Entities;
 using Domain.Entities.System;
-using Domain.Repository.Hotel;
-using Infrastructure.Helpers;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Shared.Exceptions;
 
-namespace Infrastructure.Repository.Hotel
+namespace Infrastructure.Repositories.Hotel
 {
     public class HotelRepository : IHotelRepository
     {

@@ -1,7 +1,7 @@
-using Application.Common.Interfaces;
 using Application.Hotel.Exceptions;
+using Application.Interfaces.Repositories.Hotel;
+using Application.Interfaces.Services;
 using Domain.Entities;
-using Domain.Repository.Hotel;
 using FluentValidation;
 using Shared.Commands;
 

@@ -1,7 +1,7 @@
 using Domain.Entities;
 using Domain.Entities.System;
 
-namespace Domain.Repository.Hotel
+namespace Application.Interfaces.Repositories.Hotel
 {
     public interface IHotelRepository
     {

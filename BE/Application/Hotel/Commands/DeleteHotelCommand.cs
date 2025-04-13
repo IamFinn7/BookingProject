@@ -1,5 +1,5 @@
 using Application.Hotel.Exceptions;
-using Domain.Repository.Hotel;
+using Application.Interfaces.Repositories.Hotel;
 using FluentValidation;
 using Shared.Commands;
 

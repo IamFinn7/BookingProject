@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Text;
 
-namespace Infrastructure.Helpers
+namespace System.Helpers
 {
     public static class SystemHelper
     {

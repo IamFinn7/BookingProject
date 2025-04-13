@@ -1,8 +1,8 @@
 using Application.Helpers;
 using Application.Hotels;
+using Application.Interfaces.Repositories.Hotel;
+using Application.Interfaces.Repositories.System;
 using Domain.Entities.System;
-using Domain.Repository;
-using Domain.Repository.Hotel;
 using Shared.Helpers;
 using Shared.Queries;
 

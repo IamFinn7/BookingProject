@@ -1,6 +1,6 @@
 using Application.Hotel.Exceptions;
+using Application.Interfaces.Repositories.Hotel;
 using Domain.Entities;
-using Domain.Repository.Hotel;
 using FluentValidation;
 using Shared.Commands;
 

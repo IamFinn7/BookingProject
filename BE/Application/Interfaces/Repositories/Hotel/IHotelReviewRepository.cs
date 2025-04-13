@@ -1,6 +1,6 @@
 using Domain.Entities;
 
-namespace Domain.Repository.Hotel
+namespace Application.Interfaces.Repositories.Hotel
 {
     public interface IHotelReviewRepository
     {

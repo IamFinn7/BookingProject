@@ -18,3 +18,5 @@ obj/
 # Optional: ignore secrets or local config
 appsettings.Local.json
 secrets.json
+
+.fake

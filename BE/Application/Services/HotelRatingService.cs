@@ -1,8 +1,8 @@
-using Application.Common.Interfaces;
+using Application.Interfaces.Repositories.Hotel;
+using Application.Interfaces.Services;
 using Domain.Entities;
-using Domain.Repository.Hotel;
 
-namespace Application.Common.Services
+namespace Application.Services
 {
     public class HotelRatingService : IHotelRatingService
     {

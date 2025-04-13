@@ -1,9 +1,9 @@
+using Application.Interfaces.Repositories.Hotel;
 using Domain.Entities;
-using Domain.Repository.Hotel;
 using MongoDB.Driver;
 using Shared.Exceptions;
 
-namespace Infrastructure.Repository.Hotel
+namespace Infrastructure.Repositories.Hotel
 {
     public class HotelReviewRepository : IHotelReviewRepository
     {

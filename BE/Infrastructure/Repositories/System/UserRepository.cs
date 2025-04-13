@@ -1,9 +1,9 @@
+using Application.Interfaces.Repositories.System;
 using Domain.Entities;
-using Domain.Repository;
 using MongoDB.Driver;
 using Shared.Exceptions;
 
-namespace Infrastructure.Repository
+namespace Infrastructure.Repositories.System
 {
     public class UserRepository : IUserRepository
     {
@@ -26,10 +26,24 @@ namespace Infrastructure.Repository
 
                 var result = await _collection.Find(filter).FirstOrDefaultAsync();
 
-				if (result == null)
-					return "unknown";
+                if (result == null)
+                    return "unknown";
 
-				return result.full_name;
+                return result.full_name;
+            }
+            catch
+            {
+                throw new InternalServerException();
+            }
+        }
+
+        public async Task<UserEntity> RegisterAccountAsync(UserEntity entity)
+        {
+            try
+            {
+                await _collection.InsertOneAsync(entity);
+
+                return entity;
             }
             catch
             {

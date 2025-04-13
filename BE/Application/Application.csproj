@@ -3,7 +3,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\Services\Authentication\" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -1,10 +1,10 @@
-using Application.Common.Interfaces;
 using Application.Hotels;
+using Application.Interfaces.Repositories.Hotel;
+using Application.Interfaces.Services;
 using Domain.Entities;
-using Domain.Repository.Hotel;
 using FluentValidation;
-using Infrastructure.Helpers;
 using Shared.Commands;
+using System.Helpers;
 
 namespace Application.Hotel.Commands
 {

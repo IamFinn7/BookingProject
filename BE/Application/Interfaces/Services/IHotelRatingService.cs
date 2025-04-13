@@ -1,4 +1,4 @@
-namespace Application.Common.Interfaces
+namespace Application.Interfaces.Services
 {
     public interface IHotelRatingService
     {
