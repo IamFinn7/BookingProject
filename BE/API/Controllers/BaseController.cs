@@ -1,5 +1,5 @@
-using API.Response;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Responses;
 
 namespace API.Controllers
 {
@@ -29,8 +29,8 @@ namespace API.Controllers
                 {
                     status = status,
                     message = message,
-                    option = option,
                     metadata = data,
+                    option = option,
                 }
             );
         }
@@ -55,33 +55,9 @@ namespace API.Controllers
             );
         }
 
-        protected IActionResult InternalServerError(string message = "INTERNAL_SERVER_ERROR")
-        {
-            return StatusCode(
-                StatusCodes.Status500InternalServerError,
-                new ErrorResponse
-                {
-                    status = StatusCodes.Status500InternalServerError,
-                    message = message,
-                }
-            );
-        }
-
-        protected IActionResult AuthorizationError(string message)
-        {
-            return StatusCode(
-                StatusCodes.Status401Unauthorized,
-                new ErrorResponse { status = StatusCodes.Status401Unauthorized, message = message }
-            );
-        }
-
         protected IActionResult Failure(int status, string message)
         {
-            if (status == StatusCodes.Status404NotFound)
-            {
-                return NotFound(new ErrorResponse { status = status, message = message });
-            }
-            return BadRequest(new ErrorResponse { status = status, message = message });
+            return StatusCode(status, new ErrorResponse { status = status, message = message });
         }
     }
 }

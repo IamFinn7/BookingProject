@@ -24,11 +24,7 @@ namespace API.Controllers.Hotel
         )
         {
             var result = await _mediator.Send(hotelReviewCommand);
-            return Success(
-                result,
-                ResponseCode.CREATED_SUCCESS.GetMessage(),
-                ResponseCode.CREATED_SUCCESS.GetCode()
-            );
+            return Success(result, ResponseCode.OK.GetMessage());
         }
 
         [HttpPut("{id}")]
@@ -50,7 +46,7 @@ namespace API.Controllers.Hotel
                     request.Comment
                 )
             );
-            return Success(ResponseCode.UPDATED_SUCCESS.GetMessage());
+            return Success(ResponseCode.OK.GetMessage());
         }
 
         [HttpDelete("{id}")]
@@ -58,7 +54,7 @@ namespace API.Controllers.Hotel
         public async Task<IActionResult> DeleteHotelReview(string id)
         {
             await _mediator.Send(new DeleteHotelReviewCommand(id));
-            return Success(ResponseCode.DELETE_SUCCESS.GetMessage());
+            return Success(ResponseCode.OK.GetMessage());
         }
     }
 }

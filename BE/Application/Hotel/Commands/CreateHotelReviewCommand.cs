@@ -4,7 +4,7 @@ using Application.Interfaces.Services;
 using Domain.Entities;
 using FluentValidation;
 using Shared.Commands;
-using System.Helpers;
+using Shared.Helpers;
 
 namespace Application.Hotel.Commands
 {
@@ -21,45 +21,45 @@ namespace Application.Hotel.Commands
     public class CreateHotelReviewCommandValidator : AbstractValidator<CreateHotelReviewCommand>
     {
         public CreateHotelReviewCommandValidator() { }
+    }
 
-        public class CreateHotelReviewCommandHandler
-            : ICommandHandler<CreateHotelReviewCommand, CreateHotelReviewResponse>
+    public class CreateHotelReviewCommandHandler
+        : ICommandHandler<CreateHotelReviewCommand, CreateHotelReviewResponse>
+    {
+        private readonly IHotelReviewRepository _rep;
+        private readonly IHotelRatingService _ratingService;
+
+        public CreateHotelReviewCommandHandler(
+            IHotelReviewRepository rep,
+            IHotelRatingService ratingService
+        )
         {
-            private readonly IHotelReviewRepository _rep;
-            private readonly IHotelRatingService _ratingService;
+            _rep = rep;
+            _ratingService = ratingService;
+        }
 
-            public CreateHotelReviewCommandHandler(
-                IHotelReviewRepository rep,
-                IHotelRatingService ratingService
-            )
+        public async Task<CreateHotelReviewResponse> Handle(
+            CreateHotelReviewCommand request,
+            CancellationToken cancellationToken
+        )
+        {
+            HotelReviewEntity review = new()
             {
-                _rep = rep;
-                _ratingService = ratingService;
-            }
+                id = SystemHelper.RandomId(),
+                hotel_id = request.HotelId,
+                user_id = request.UserId,
+                cleanliness = request.Cleanliness,
+                location = request.Location,
+                service = request.Service,
+                facilities = request.Facilities,
+                comment = request.Comment ?? "",
+                created_at = DateTime.Now.Ticks,
+            };
 
-            public async Task<CreateHotelReviewResponse> Handle(
-                CreateHotelReviewCommand request,
-                CancellationToken cancellationToken
-            )
-            {
-                HotelReviewEntity review = new()
-                {
-                    id = SystemHelper.RandomId(),
-                    hotel_id = request.HotelId,
-                    user_id = request.UserId,
-                    cleanliness = request.Cleanliness,
-                    location = request.Location,
-                    service = request.Service,
-                    facilities = request.Facilities,
-                    comment = request.Comment ?? "",
-                    created_at = DateTime.Now.Ticks,
-                };
+            var result = await _rep.AddAsync(review);
+            await _ratingService.RecalculateRatingAsync(request.HotelId);
 
-                var result = await _rep.AddAsync(review);
-                await _ratingService.RecalculateRatingAsync(request.HotelId);
-
-                return result.ToHotelReviewFromCreate();
-            }
+            return result.ToHotelReviewFromCreate();
         }
     }
 }

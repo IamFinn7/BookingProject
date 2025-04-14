@@ -3,7 +3,7 @@ using Application.Interfaces.Repositories.Hotel;
 using Domain.Entities;
 using FluentValidation;
 using Shared.Commands;
-using System.Helpers;
+using Shared.Helpers;
 
 namespace Application.Hotel.Commands
 {
@@ -24,38 +24,38 @@ namespace Application.Hotel.Commands
             RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required");
             RuleFor(x => x.Address).NotEmpty().WithMessage("Address is required");
         }
+    }
 
-        public class CreateHotelCommandHandler
-            : ICommandHandler<CreateHotelCommand, CreateHotelResponse>
+    public class CreateHotelCommandHandler
+        : ICommandHandler<CreateHotelCommand, CreateHotelResponse>
+    {
+        private readonly IHotelRepository _rep;
+
+        public CreateHotelCommandHandler(IHotelRepository rep)
         {
-            private readonly IHotelRepository _rep;
+            _rep = rep;
+        }
 
-            public CreateHotelCommandHandler(IHotelRepository rep)
+        public async Task<CreateHotelResponse> Handle(
+            CreateHotelCommand request,
+            CancellationToken cancellationToken
+        )
+        {
+            HotelEntity hotel = new()
             {
-                _rep = rep;
-            }
+                id = SystemHelper.RandomId(),
+                name = request.Name,
+                owner_id = request.OwnerId,
+                address = request.Address,
+                city = request.City,
+                country = request.Country,
+                amenities = request.Amenities,
+                images = request.Images,
+                created_at = DateTime.Now.Ticks,
+            };
 
-            public async Task<CreateHotelResponse> Handle(
-                CreateHotelCommand request,
-                CancellationToken cancellationToken
-            )
-            {
-                HotelEntity hotel = new()
-                {
-                    id = SystemHelper.RandomId(),
-                    name = request.Name,
-                    owner_id = request.OwnerId,
-                    address = request.Address,
-                    city = request.City,
-                    country = request.Country,
-                    amenities = request.Amenities,
-                    images = request.Images,
-                    created_at = DateTime.Now.Ticks,
-                };
-
-                var result = await _rep.AddAsync(hotel);
-                return result.ToHotelFromCreate();
-            }
+            var result = await _rep.AddAsync(hotel);
+            return result.ToHotelFromCreate();
         }
     }
 }

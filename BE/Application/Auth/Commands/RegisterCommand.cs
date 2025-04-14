@@ -1,39 +1,62 @@
 using Application.Interfaces.Repositories.Authentication;
 using Application.Interfaces.Repositories.System;
+using Domain.Entities;
+using FluentValidation;
 using Shared.Commands;
+using Shared.Helpers;
 
 namespace Application.Auth.Commands
 {
     public record RegisterCommand(string Email, string Password) : ICommand<AuthResponse> { }
 
-    // public class RegisterCommandHandler : ICommandHandler<RegisterCommand, AuthResponse>
-    // {
-    //     private readonly IUserRepository _userRepo;
-    //     private readonly IJwtTokenGenerator _jwtGen;
+    public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
+    {
+        public RegisterCommandValidator()
+        {
+            RuleFor(x => x.Email).NotEmpty().WithMessage("Email is required");
+            RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required");
+        }
+    }
 
-    //     public RegisterCommandHandler(IUserRepository userRepo, IJwtTokenGenerator jwtGen)
-    //     {
-    //         _userRepo = userRepo;
-    //         _jwtGen = jwtGen;
-    //     }
+    public class RegisterCommandHandler : ICommandHandler<RegisterCommand, AuthResponse>
+    {
+        private readonly IUserRepository _rep;
+        private readonly IJwtTokenGenerator _jwtGen;
 
-    //public async Task<AuthResponse> Handle(RegisterCommand request, CancellationToken ct)
-    //{
-    //    //if (await _userRepo.ExistsByEmailAsync(request.Email))
-    //    //    throw new Exception("Email already exists");
+        public RegisterCommandHandler(IUserRepository rep, IJwtTokenGenerator jwtGen)
+        {
+            _rep = rep;
+            _jwtGen = jwtGen;
+        }
 
-    //    //var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-    //    //var user = new UserEntity
-    //    //{
-    //    //    id = Guid.NewGuid().ToString(),
-    //    //    Email = request.Email,
-    //    //    PasswordHash = passwordHash,
-    //    //};
+        public async Task<AuthResponse> Handle(
+            RegisterCommand request,
+            CancellationToken cancellationToken
+        )
+        {
+            var existingUser = await _rep.GetByEmailAsync(request.Email);
+            if (existingUser is not null)
+                throw new Exception("Email is already registered.");
 
-    //    //await _userRepo.AddAsync(user);
-    //    //var token = _jwtGen.GenerateToken(user);
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
-    //    //return new AuthResponse(user.Email, token);
-    //}
-    // }
+            var newUser = new UserEntity
+            {
+                id = SystemHelper.RandomId(),
+                email = request.Email,
+                password = passwordHash,
+                role = Role.Customer,
+            };
+
+            await _rep.RegisterAccountAsync(newUser);
+
+            var token = _jwtGen.GenerateToken(
+                newUser.id.ToString(),
+                newUser.email,
+                newUser.role.ToString()
+            );
+
+            return new AuthResponse(newUser.id, newUser.email, token);
+        }
+    }
 }

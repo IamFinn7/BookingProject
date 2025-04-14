@@ -1,3 +1,4 @@
+using API.Extensions;
 using Application;
 using Infrastructure;
 
@@ -20,10 +21,16 @@ builder.Services.AddApplication();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment()) { }
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage(); // Hiển thị lỗi chi tiết khi dev
+}
 
 app.UseHttpsRedirection();
 
+app.UseExceptionHandling();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

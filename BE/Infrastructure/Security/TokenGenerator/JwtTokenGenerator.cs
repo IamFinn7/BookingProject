@@ -2,18 +2,26 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Application.Interfaces.Repositories.Authentication;
+using Application.Interfaces.Repositories.Common;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Security.TokenGenerator
 {
-    public class JwtTokenGenerator(IOptions<JwtSettings> jwtOptions) : IJwtTokenGenerator
+    public class JwtTokenGenerator : IJwtTokenGenerator
     {
-        private readonly JwtSettings _jwtSettings = jwtOptions.Value;
+        private readonly JwtSettings _jwtSettings;
+        private readonly IDateTimeProvider _datetimeProvider;
+
+        public JwtTokenGenerator(IDateTimeProvider dateTimeProvider, IOptions<JwtSettings> jwtOptions)
+        {
+            _datetimeProvider = dateTimeProvider;
+            _jwtSettings = jwtOptions.Value;
+        }
 
         public string GenerateToken(string userId, string email, string role)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>
@@ -29,8 +37,8 @@ namespace Infrastructure.Security.TokenGenerator
             var token = new JwtSecurityToken(
                 _jwtSettings.Issuer,
                 _jwtSettings.Audience,
-                claims,
-                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.TokenExpirationInMinutes),
+                expires: _datetimeProvider.UtcNow.AddMinutes(_jwtSettings.TokenExpirationInMinutes),
+                claims: claims,
                 signingCredentials: credentials
             );
 
