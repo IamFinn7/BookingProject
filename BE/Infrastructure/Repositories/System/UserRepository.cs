@@ -37,6 +37,22 @@ namespace Infrastructure.Repositories.System
             }
         }
 
+        public async Task<UserEntity> GetByIdAsync(string id)
+        {
+            try
+            {
+                var filter = Builders<UserEntity>.Filter.Eq(x => x.id, id);
+
+                var result = await _collection.Find(filter).FirstOrDefaultAsync();
+
+                return result;
+            }
+            catch
+            {
+                throw new InternalServerException();
+            }
+        }
+
         public async Task<UserEntity> GetByEmailAsync(string email)
         {
             try

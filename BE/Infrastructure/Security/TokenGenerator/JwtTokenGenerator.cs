@@ -44,5 +44,68 @@ namespace Infrastructure.Security.TokenGenerator
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public string GenerateRefreshToken(string userId)
+        {
+            // Tạo refresh token (refresh token có thể chỉ là một chuỗi ngẫu nhiên)
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var claims = new List<Claim> { new("id", userId) };
+
+            var refreshToken = new JwtSecurityToken(
+                _jwtSettings.Issuer,
+                _jwtSettings.Audience,
+                expires: _datetimeProvider.UtcNow.AddMinutes(
+                    _jwtSettings.RefreshTokenExpirationInMinutes
+                ),
+                claims: claims,
+                signingCredentials: credentials
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(refreshToken);
+        }
+
+        public ClaimsPrincipal? ValidateRefreshToken(string refreshToken)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.UTF8.GetBytes(_jwtSettings.SecretKey);
+
+                var validationParameters = new TokenValidationParameters
+                {
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = false, // Vì chỉ cần kiểm tra tính hợp lệ, không kiểm tra hạn
+                    ClockSkew = TimeSpan.Zero,
+                };
+
+                var principal = tokenHandler.ValidateToken(
+                    refreshToken,
+                    validationParameters,
+                    out var validatedToken
+                );
+
+                // Kiểm tra định dạng token hợp lệ
+                if (
+                    validatedToken is not JwtSecurityToken jwtToken
+                    || !jwtToken.Header.Alg.Equals(
+                        SecurityAlgorithms.HmacSha256,
+                        StringComparison.InvariantCultureIgnoreCase
+                    )
+                )
+                {
+                    return null;
+                }
+
+                return principal;
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }

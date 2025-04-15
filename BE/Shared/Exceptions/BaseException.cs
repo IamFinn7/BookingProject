@@ -16,11 +16,11 @@ namespace Shared.Exceptions
             : base(message) { }
     }
 
-    public class UnauthorizedException : BaseException
+    public class AuthorizedException : BaseException
     {
         public override int StatusCode => 401;
 
-        public UnauthorizedException(string message)
+        public AuthorizedException(string message)
             : base(message) { }
     }
 

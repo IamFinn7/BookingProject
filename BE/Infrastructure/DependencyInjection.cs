@@ -40,6 +40,7 @@ namespace Infrastructure
         private static IServiceCollection AddPersistence(this IServiceCollection services)
         {
             services.AddSingleton<MongoDBHelper>();
+            services.AddSingleton<IKeyTokenRepository, KeyTokenRepository>();
 
             services.AddScoped<IHotelRepository, HotelRepository>();
             services.AddScoped<IHotelReviewRepository, HotelReviewRepository>();

@@ -7,7 +7,7 @@ using Shared.Helpers;
 
 namespace Application.Auth.Commands
 {
-    public record RegisterCommand(string Email, string Password) : ICommand<AuthResponse> { }
+    public record RegisterCommand(string Email, string Password) : ICommand<RegisterResponse> { }
 
     public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
     {
@@ -18,7 +18,7 @@ namespace Application.Auth.Commands
         }
     }
 
-    public class RegisterCommandHandler : ICommandHandler<RegisterCommand, AuthResponse>
+    public class RegisterCommandHandler : ICommandHandler<RegisterCommand, RegisterResponse>
     {
         private readonly IUserRepository _rep;
         private readonly IJwtTokenGenerator _jwtGen;
@@ -29,7 +29,7 @@ namespace Application.Auth.Commands
             _jwtGen = jwtGen;
         }
 
-        public async Task<AuthResponse> Handle(
+        public async Task<RegisterResponse> Handle(
             RegisterCommand request,
             CancellationToken cancellationToken
         )
@@ -56,7 +56,7 @@ namespace Application.Auth.Commands
                 newUser.role.ToString()
             );
 
-            return new AuthResponse(newUser.id, newUser.email, token);
+            return new RegisterResponse(newUser.id, newUser.email, token);
         }
     }
 }
