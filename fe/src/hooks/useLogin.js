@@ -2,25 +2,18 @@ import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { message } from "antd";
 
-const useSignup = () => {
+const useLogin = () => {
   const { login } = useAuth();
   const [loading, setLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
-  const registerUser = async (values) => {
-    if (values.password !== values.passwordConfirm) {
-      messageApi.error("Mật khẩu không trùng khớp");
-      return;
-    }
-
+  const loginUser = async (values) => {
     try {
       setLoading(true);
 
       const { passwordConfirm, ...payload } = values;
 
-      console.log("📦 Dữ liệu gửi đi:", values);
-
-      const res = await fetch("https://localhost:7242/api/access/register", {
+      const res = await fetch("https://localhost:7242/api/access/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -29,13 +22,18 @@ const useSignup = () => {
       });
 
       const data = await res.json();
+      console.log("🧪 Toàn bộ data từ API:", data);
       if (res.status === 200) {
-        messageApi.success("Đăng ký tài khoản thành công !");
-        login(data.token, data.user);
-      } else if (res.status === 400) {
-        messageApi.error(data.message);
+        const accessToken = data.tokens.accessToken;
+        const user = data.user;
+
+        login(accessToken, user);
+
+        messageApi.success("Đăng nhập thành công !");
+      } else if (res.status === 401) {
+        messageApi.error("Tài khoản hoặc mật khẩu sai !");
       } else {
-        messageApi.error("Đăng ký không thành công !");
+        messageApi.error("Đăng nhập không thành công !");
       }
     } catch (error) {
       messageApi.error("Lỗi kết nối !");
@@ -44,7 +42,7 @@ const useSignup = () => {
     }
   };
 
-  return { loading, registerUser, contextHolder };
+  return { loading, loginUser, contextHolder };
 };
 
-export default useSignup;
+export default useLogin;

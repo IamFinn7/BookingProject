@@ -1,13 +1,14 @@
 import React from "react";
-import { Card, Flex, Typography, Form, Input, Button, Spin } from "antd";
+import { Card, Flex, Typography, Form, Input, Button } from "antd";
 import { geekblue } from "@ant-design/colors";
 import { Link } from "react-router-dom";
-import useSignup from "../hooks/useSignup";
+import useLogin from "../hooks/useLogin";
 
-const Register = () => {
-  const { loading, registerUser, contextHolder } = useSignup();
-  const handleRegister = (values) => {
-    registerUser(values);
+const Login = () => {
+  const { loading, loginUser, contextHolder } = useLogin();
+
+  const handleLogin = async (values) => {
+    await loginUser(values);
   };
 
   return (
@@ -24,9 +25,9 @@ const Register = () => {
             marginTop: "1vh",
           }}
         >
-          Tạo tài khoản
+          Đăng nhập
         </Typography.Title>
-        <Form layout="vertical" onFinish={handleRegister} autoComplete="off">
+        <Form layout="vertical" onFinish={handleLogin} autoComplete="off">
           <Form.Item
             name="email"
             rules={[
@@ -53,17 +54,6 @@ const Register = () => {
           >
             <Input.Password size="large" placeholder="Mật khẩu" />
           </Form.Item>
-          <Form.Item
-            name="passwordConfirm"
-            rules={[
-              {
-                required: true,
-                message: "Hãy nhập lại mật khẩu!",
-              },
-            ]}
-          >
-            <Input.Password size="large" placeholder="Nhập lại mật khẩu" />
-          </Form.Item>
           <Form.Item>
             <Button
               type={`${loading ? "" : "primary"}`}
@@ -75,14 +65,14 @@ const Register = () => {
                 color: "white",
               }}
             >
-              {loading ? <Spin /> : "Đăng ký"}
+              Đăng nhập
             </Button>
           </Form.Item>
           <Form.Item style={{ textAlign: "center", marginBottom: "1vh" }}>
             <Typography.Text>
-              Đã có tài khoản?{" "}
-              <Link to="/login" style={{ color: geekblue[6] }}>
-                Đăng nhập
+              Bạn chưa có tài khoản?{" "}
+              <Link to="/register" style={{ color: geekblue[6] }}>
+                Đăng ký
               </Link>
             </Typography.Text>
           </Form.Item>
@@ -92,4 +82,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;
