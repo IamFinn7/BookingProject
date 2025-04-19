@@ -1,17 +1,25 @@
-import { Button } from "antd";
+import { Button, Layout } from "antd";
 import { useAuth } from "../contexts/AuthContext.jsx";
+import CustomHeader from "../components/header.jsx";
+
+const { Header } = Layout;
 
 const Dashboard = () => {
   const { UserData, logout } = useAuth();
 
   const handleLogout = async () => {
     await logout();
-  }
-  
+  };
+
   return (
-    <>
-      <Button onClick={logout}>Logout</Button>
-    </>
+    <Layout>
+      <Header style={{ background: "white" }}>
+        <CustomHeader></CustomHeader>
+      </Header>
+    </Layout>
+    // <>
+    //   <Button onClick={logout}>Logout</Button>
+    // </>
   );
 };
 
