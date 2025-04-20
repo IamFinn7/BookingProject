@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Menu, Typography, Flex, Button, Popover } from "antd";
-import { MenuOutlined } from "@ant-design/icons";
+import { geekblue } from "@ant-design/colors";
+import { MenuOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
@@ -13,13 +14,13 @@ const menuItems = [
   { key: "pages", label: <Link to="/dashboard">Pages</Link> },
 ];
 
-const HeaderMenu = () => {
-  const { logout } = useAuth();
+const CustomHeader = () => {
+  const { logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     await logout();
-    navigate("/login");
+    navigate("/");
   };
 
   const handleNavigate = (path) => {
@@ -63,31 +64,78 @@ const HeaderMenu = () => {
   );
 
   return (
-    <Flex align="center" justify="space-between">
-      <Typography.Title level={3} type="secondary" style={{ margin: 0 }}>
-        Logo HERE
-      </Typography.Title>
+    <Flex align="center" justify="space-between" style={{ height: "100%" }}>
+      <div style={{ flex: "0 0 20%" }}>
+        <Typography.Title level={3} type="secondary" style={{ margin: 0 }}>
+          Logo HERE
+        </Typography.Title>
+      </div>
 
       <Menu
         mode="horizontal"
         selectable={false}
         style={{
-          flex: 1,
+          flex: "0 0 60%",
           fontSize: "18px",
-          fontWeight: 500,
+          fontWeight: "500",
           justifyContent: "center",
+          border: "none",
         }}
         items={menuItems}
       />
 
-      <Popover content={menuIcons} placement="bottomLeft">
+      <Flex
+        justify="flex-end"
+        gap={35}
+        align="center"
+        style={{ flex: "0 0 20%" }}
+      >
         <Button
-          icon={<MenuOutlined />}
-          style={{ fontSize: "20px", border: "none" }}
+          icon={<ShoppingCartOutlined />}
+          onClick={() => {
+            if (isAuthenticated) {
+              navigate("/cart");
+            } else {
+              navigate("/login");
+            }
+          }}
+          style={{
+            fontSize: "25px",
+            fontWeight: "500",
+            border: "none",
+            padding: "1.25rem",
+          }}
         />
-      </Popover>
+
+        {isAuthenticated ? (
+          <Popover content={menuIcons} placement="bottomLeft">
+            <Button
+              icon={<MenuOutlined style={{ fontSize: "20px" }} />}
+              style={{
+                fontSize: "17px",
+                fontWeight: "bold",
+                border: "none",
+                padding: "1.25rem",
+              }}
+            />
+          </Popover>
+        ) : (
+          <Button
+            onClick={() => navigate("/login")}
+            style={{
+              fontSize: "17px",
+              fontWeight: "500",
+              background: geekblue[6],
+              color: "white",
+              padding: "1.25rem",
+            }}
+          >
+            Đăng nhập
+          </Button>
+        )}
+      </Flex>
     </Flex>
   );
 };
 
-export default HeaderMenu;
+export default CustomHeader;

@@ -20,17 +20,14 @@ const App = () => {
         <Route
           path="/register"
           element={
-            !isAuthenticated ? <Register /> : <Navigate to="/dashboard" />
+            !isAuthenticated ? <Register /> : <Navigate to="/" />
           }
         />
         <Route
           path="/login"
-          element={!isAuthenticated ? <Login /> : <Navigate to="/dashboard" />}
+          element={!isAuthenticated ? <Login /> : <Navigate to="/" />}
         />
-        <Route
-          path="/dashboard"
-          element={isAuthenticated ? <Dashboard /> : <Login />}
-        />
+        <Route path="/" element={<Dashboard />} />
       </Routes>
     </Router>
   );

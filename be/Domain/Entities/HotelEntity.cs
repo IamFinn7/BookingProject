@@ -11,15 +11,15 @@ namespace Domain.Entities
         public RatingSummary rating { get; set; } = new();
         public List<string> amenities { get; set; } = new();
         public List<string> images { get; set; } = new();
-    }
 
-    public class RatingSummary
-    {
-        public double average_rating { get; set; }
-        public int review_count { get; set; }
-        public double cleanliness { get; set; }
-        public double location { get; set; }
-        public double service { get; set; }
-        public double facilities { get; set; }
+        public class RatingSummary
+        {
+            public double average_rating { get; set; }
+            public int review_count { get; set; }
+            public double cleanliness { get; set; }
+            public double location { get; set; }
+            public double service { get; set; }
+            public double facilities { get; set; }
+        }
     }
 }

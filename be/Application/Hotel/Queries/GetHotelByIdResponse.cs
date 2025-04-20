@@ -1,6 +1,6 @@
 namespace Application.Hotel.Queries
 {
-    public class GetHotelsResponse
+    public class GetHotelByIdResponse
     {
         public string Id { get; set; }
         public string Name { get; set; }

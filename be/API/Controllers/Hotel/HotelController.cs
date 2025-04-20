@@ -30,6 +30,14 @@ namespace API.Controllers.Hotel
             return Success(result, ResponseCode.OK.GetMessage());
         }
 
+        [HttpGet("{id}")]
+        // [Authorize]
+        public async Task<IActionResult> GetHotelById(string id)
+        {
+            var result = await _mediator.Send(new GetHotelById(id));
+            return Success(result, ResponseCode.OK.GetMessage());
+        }
+
         [HttpPost]
         // [Authorize]
         public async Task<IActionResult> CreateHotel([FromBody] CreateHotelCommand hotelCommand)

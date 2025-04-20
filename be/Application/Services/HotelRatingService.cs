@@ -24,7 +24,7 @@ namespace Application.Services
             if (reviews == null || !reviews.Any())
                 return;
 
-            var summary = new RatingSummary
+            var summary = new HotelEntity.RatingSummary
             {
                 review_count = reviews.Count,
                 cleanliness = reviews.Average(r => r.cleanliness),

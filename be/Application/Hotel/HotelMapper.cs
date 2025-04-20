@@ -15,7 +15,30 @@ namespace Application.Hotels
                 Address = hotels.address,
                 City = hotels.city,
                 Country = hotels.country,
-                Rating = new RatingSummaryResponse
+                Rating = new GetHotelsResponse.RatingSummary
+                {
+                    AverageRating = hotels.rating.average_rating,
+                    ReviewCount = hotels.rating.review_count,
+                    Cleanliness = hotels.rating.cleanliness,
+                    Location = hotels.rating.location,
+                    Service = hotels.rating.service,
+                    Facilities = hotels.rating.facilities,
+                },
+                Amenities = hotels.amenities,
+                Images = hotels.images,
+            };
+        }
+
+        public static GetHotelByIdResponse ToGetHotelByIdResponse(this HotelEntity hotels)
+        {
+            return new GetHotelByIdResponse
+            {
+                Id = hotels.id,
+                Name = hotels.name,
+                Address = hotels.address,
+                City = hotels.city,
+                Country = hotels.country,
+                Rating = new GetHotelByIdResponse.RatingSummary
                 {
                     AverageRating = hotels.rating.average_rating,
                     ReviewCount = hotels.rating.review_count,

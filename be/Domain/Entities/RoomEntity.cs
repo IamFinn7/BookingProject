@@ -1,36 +1,24 @@
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-
 namespace Domain.Entities
 {
     public class RoomEntity : BaseEntity
     {
-        [BsonElement("hotel_id")]
-        public ObjectId HotelId { get; set; } // ref: Hotel.id
+        public string hotel_id { get; set; }
 
-        [BsonElement("category_id")]
-        public ObjectId CategoryId { get; set; } // ref: RoomCategory.id
+        public string category_id { get; set; }
 
-        [BsonElement("room_number")]
-        public string RoomNumber { get; set; }
+        public string room_number { get; set; }
 
-        [BsonElement("bed_count")]
-        public int BedCount { get; set; }
+        public int bed_count { get; set; }
 
-        [BsonElement("price_per_night")]
-        public double PricePerNight { get; set; }
+        public double price_per_night { get; set; }
 
-        [BsonElement("max_guests")]
-        public int MaxGuests { get; set; }
+        public int max_guest { get; set; }
 
-        [BsonElement("status")]
-        public RoomStatus Status { get; set; }
+        public RoomStatus status { get; set; }
 
-        [BsonElement("amenities")]
-        public List<string> Amenities { get; set; } = new List<string>();
+        public List<string> amenities { get; set; } = new List<string>();
 
-        [BsonElement("images")]
-        public List<string> Images { get; set; } = new List<string>();
+        public List<string> images { get; set; } = new List<string>();
     }
 
     public enum RoomStatus
