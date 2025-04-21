@@ -15,6 +15,8 @@ namespace Application.Hotels
                 Address = hotels.address,
                 City = hotels.city,
                 Country = hotels.country,
+                Star = hotels.star,
+                Type = hotels.type,
                 Rating = new GetHotelsResponse.RatingSummary
                 {
                     AverageRating = hotels.rating.average_rating,
@@ -38,6 +40,8 @@ namespace Application.Hotels
                 Address = hotels.address,
                 City = hotels.city,
                 Country = hotels.country,
+                Star = hotels.star,
+                Type = hotels.type,
                 Rating = new GetHotelByIdResponse.RatingSummary
                 {
                     AverageRating = hotels.rating.average_rating,
@@ -62,6 +66,8 @@ namespace Application.Hotels
                 Address = hotels.address,
                 City = hotels.city,
                 Country = hotels.country,
+                Star = hotels.star,
+                Type = hotels.type,
                 Amenities = hotels.amenities,
                 Images = hotels.images,
             };

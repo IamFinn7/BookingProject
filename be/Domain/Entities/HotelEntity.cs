@@ -1,3 +1,5 @@
+using Domain.Enums;
+
 namespace Domain.Entities
 {
     public class HotelEntity : BaseEntity
@@ -8,6 +10,8 @@ namespace Domain.Entities
         public string address { get; set; }
         public string city { get; set; }
         public string country { get; set; }
+        public int star { get; set; }
+        public AccommodationType type { get; set; }
         public RatingSummary rating { get; set; } = new();
         public List<string> amenities { get; set; } = new();
         public List<string> images { get; set; } = new();

@@ -1,3 +1,5 @@
+using Domain.Enums;
+
 namespace Application.Hotel.Commands
 {
     public class CreateHotelResponse
@@ -8,6 +10,8 @@ namespace Application.Hotel.Commands
         public string Address { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
+        public int Star { get; set; }
+        public AccommodationType Type { get; set; }
         public List<string> Amenities { get; set; }
         public List<string> Images { get; set; }
     }

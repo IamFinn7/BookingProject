@@ -117,6 +117,8 @@ namespace Infrastructure.Repositories.Hotel
                     .Set(x => x.address, entity.address ?? hotel.address)
                     .Set(x => x.city, entity.city ?? hotel.city)
                     .Set(x => x.country, entity.country ?? hotel.country)
+                    .Set(x => x.star, entity?.star ?? hotel.star)
+                    .Set(x => x.type, entity?.type ?? hotel.type)
                     .Set(x => x.amenities, entity.amenities ?? new List<string>())
                     .Set(x => x.images, entity.images ?? new List<string>())
                     .Set(x => x.updated_at, DateTime.Now.Ticks);
