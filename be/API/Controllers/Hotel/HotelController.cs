@@ -1,6 +1,7 @@
 using API.DTOs.Hotel;
-using Application.Hotel.Commands;
-using Application.Hotel.Queries;
+using Application.Features.Hotel.Commands;
+using Application.Features.Hotel.Queries;
+using Application.Features.Room.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Constants;
@@ -35,6 +36,19 @@ namespace API.Controllers.Hotel
         public async Task<IActionResult> GetHotelById(string id)
         {
             var result = await _mediator.Send(new GetHotelById(id));
+            return Success(result, ResponseCode.OK.GetMessage());
+        }
+
+        [HttpGet("{id}/rooms")]
+        // [Authorize]
+        public async Task<IActionResult> GetRooms(
+            string id,
+            [FromQuery] string sortBy = "created_at:desc",
+            [FromQuery] int page = 0,
+            [FromQuery] int limit = 10
+        )
+        {
+            var result = await _mediator.Send(new GetRooms(id, sortBy, page, limit));
             return Success(result, ResponseCode.OK.GetMessage());
         }
 

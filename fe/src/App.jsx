@@ -9,8 +9,8 @@ import "./App.css";
 import Register from "./auth/Register";
 import Login from "./auth/Login";
 import { useAuth } from "./contexts/AuthContext.jsx";
-import Dashboard from "./pages/Dashboard.jsx";
-import HotelDetail from "./pages/HotelDetail.jsx";
+import Dashboard from "./pages/Dashboard/Dashboard.jsx";
+import HotelDetail from "./pages/HotelDetail/Index.jsx";
 
 const App = () => {
   const { isAuthenticated } = useAuth();

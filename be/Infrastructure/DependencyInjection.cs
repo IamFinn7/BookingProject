@@ -1,8 +1,10 @@
 using Application.Interfaces.Repositories.Authentication;
 using Application.Interfaces.Repositories.Common;
 using Application.Interfaces.Repositories.Hotel;
+using Application.Interfaces.Repositories.Room;
 using Application.Interfaces.Repositories.System;
 using Infrastructure.Repositories.Hotel;
+using Infrastructure.Repositories.Room;
 using Infrastructure.Repositories.System;
 using Infrastructure.Security.TokenGenerator;
 using Infrastructure.Security.TokenValidation;
@@ -44,6 +46,8 @@ namespace Infrastructure
 
             services.AddScoped<IHotelRepository, HotelRepository>();
             services.AddScoped<IHotelReviewRepository, HotelReviewRepository>();
+            services.AddScoped<IRoomRepository, RoomRepository>();
+            // services.AddScoped<IRoomFeatureRepository, RoomFeatureRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
             return services;

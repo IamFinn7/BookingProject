@@ -1,5 +1,5 @@
 using API.DTOs.Hotel;
-using Application.Hotel.Commands;
+using Application.Features.Hotel.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Constants;
