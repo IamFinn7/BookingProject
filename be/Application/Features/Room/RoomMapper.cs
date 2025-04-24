@@ -17,12 +17,18 @@ namespace Application.Features.Room
                 BedCount = rooms.bed_count,
                 Images = rooms.images,
                 Amenities = rooms.amenities,
-                Features = rooms.features,
-                UnavailableDates = rooms
-                    .unavailable_dates.Select(d => new GetRoomsResponse.RoomBookingDate
+                Features = rooms
+                    .features.Select(r => new GetRoomsResponse.RoomFeatureReference
                     {
-                        Date = d.date,
-                        BookedCount = d.booked_count,
+                        FeatureId = r.feature_id,
+                        Enabled = r.enabled,
+                    })
+                    .ToList(),
+                UnavailableDates = rooms
+                    .unavailable_dates.Select(r => new GetRoomsResponse.RoomBookingDate
+                    {
+                        Date = r.date,
+                        BookedCount = r.booked_count,
                     })
                     .ToList(),
                 CreatedAt = rooms.created_at,

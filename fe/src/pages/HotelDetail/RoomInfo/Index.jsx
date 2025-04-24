@@ -3,6 +3,9 @@ import { Card, Col, Row, Typography, Button, Image, Space } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import SquareFootIcon from "@mui/icons-material/SquareFoot";
 import SmokeFreeIcon from "@mui/icons-material/SmokeFree";
+import { getAmenityIcon } from "../../../utils/amenityIcons.jsx";
+import { gray } from "@ant-design/colors";
+import PriceTable from "./Price.jsx";
 
 const { Title, Text } = Typography;
 
@@ -28,6 +31,14 @@ const Rooms = ({ rooms }) => {
       {rooms.map((room) => {
         const currentIndex = imageIndices[room.id] || 0;
         const images = room.images || [];
+
+        const amenitiesToDisplay = room.amenities?.slice(0, 6) || [];
+        const leftColumn = amenitiesToDisplay.filter(
+          (_, index) => index % 2 === 0
+        );
+        const rightColumn = amenitiesToDisplay.filter(
+          (_, index) => index % 2 !== 0
+        );
 
         return (
           <Card key={room.id} style={{ marginTop: "1rem" }}>
@@ -78,22 +89,79 @@ const Rooms = ({ rooms }) => {
                 </div>
 
                 <Row style={{ marginTop: "1rem" }}>
-                  <Space style={{ fontSize: 18, fontWeight: 500, gap: 12 }}>
-                    <SquareFootIcon style={{ fontSize: 30 }} />
-                    {room.area || "Không rõ"} m²
+                  <Space
+                    style={{
+                      gap: 12,
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <SquareFootIcon style={{ fontSize: 30 }} />
+                    </div>
+                    <Text style={{ fontSize: 17, fontWeight: 500 }}>
+                      {room.area ? `${room.area} m²` : "Chưa rõ diện tích"}
+                    </Text>
                   </Space>
                 </Row>
 
-                <Row style={{ marginTop: "0.25rem" }}>
-                  <Space style={{ fontSize: 18, fontWeight: 500, gap: 12 }}>
-                    <SmokeFreeIcon style={{ fontSize: 30 }} />
-                    {room.isSmokingAllowed ? "Có hút thuốc" : "Không hút thuốc"}
+                <Row style={{ marginTop: "0.5rem" }}>
+                  <Space
+                    style={{
+                      gap: 12,
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <SmokeFreeIcon style={{ fontSize: 30 }} />
+                    </div>
+                    <Text style={{ fontSize: 17, fontWeight: 500 }}>
+                      {room.isSmokingAllowed
+                        ? "Có hút thuốc"
+                        : "Không hút thuốc"}
+                    </Text>
                   </Space>
+                </Row>
+
+                <Row style={{ marginTop: "1rem", color: gray[3] }}>
+                  {[leftColumn, rightColumn].map((col, index) => (
+                    <Col key={index} span={12}>
+                      {col.map((item, idx) => (
+                        <div
+                          key={idx}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 8,
+                            marginBottom: "0.75rem",
+                            fontWeight: 500,
+                          }}
+                        >
+                          {React.cloneElement(getAmenityIcon(item), {
+                            style: { fontSize: 20 },
+                          })}
+                          <Text style={{ fontSize: 15, color: gray[3] }}>
+                            {item}
+                          </Text>
+                        </div>
+                      ))}
+                    </Col>
+                  ))}
                 </Row>
               </Col>
 
               <Col span={16}>
-                <Text>{room.description}</Text>
+                <PriceTable></PriceTable>
+                {/* <PriceTable roomPrices={room.prices} /> */}
               </Col>
             </Row>
           </Card>

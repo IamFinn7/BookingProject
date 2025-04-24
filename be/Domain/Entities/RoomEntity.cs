@@ -10,13 +10,19 @@ namespace Domain.Entities
         public int max_guest { get; set; }
         public List<string> images { get; set; } = new();
         public List<string> amenities { get; set; } = new();
-        public List<string> features { get; set; } = new();
+        public List<RoomFeatureReference> features { get; set; } = new();
         public List<RoomBookingDate> unavailable_dates { get; set; } = new();
 
         public class RoomBookingDate
         {
             public long date { get; set; }
             public int booked_count { get; set; }
+        }
+
+        public class RoomFeatureReference
+        {
+            public string feature_id { get; set; }
+            public bool enabled { get; set; }
         }
     }
 }

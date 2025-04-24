@@ -38,12 +38,12 @@ const HotelDetail = () => {
     }
   };
 
- useEffect(() => {
-   if (id) {
-     fetchHotelDetail();
-     fetchRooms(); 
-   }
- }, [id]);
+  useEffect(() => {
+    if (id) {
+      fetchHotelDetail();
+      fetchRooms();
+    }
+  }, [id]);
 
   if (loading || !hotel) return <Spin tip="Đang tải dữ liệu..." />;
 

@@ -123,7 +123,7 @@ namespace Infrastructure.Repositories.Room
                     .Set(x => x.bed_count, entity?.bed_count ?? room.bed_count)
                     .Set(x => x.images, entity.images ?? new List<string>())
                     .Set(x => x.amenities, entity.amenities ?? new List<string>())
-                    .Set(x => x.features, entity.features ?? new List<string>())
+                    .Set(x => x.features, entity.features ?? room.features)
                     .Set(x => x.updated_at, DateTime.Now.Ticks);
 
                 var updated = await _collection.FindOneAndUpdateAsync(
