@@ -160,7 +160,7 @@ const Rooms = ({ rooms }) => {
               </Col>
 
               <Col span={16}>
-                <PriceTable></PriceTable>
+                <PriceTable />
                 {/* <PriceTable roomPrices={room.prices} /> */}
               </Col>
             </Row>
